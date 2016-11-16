@@ -69,7 +69,7 @@ class LocationTrack
 
     public function mapIndex(){
         $mydata=array();
-        $query="SELECT lat,lng FROM `tbl_location` WHERE `device_id`='DV201030' ORDER BY id DESC" ;
+        $query="SELECT * FROM `tbl_location` WHERE `device_id`='DV201030' ORDER BY id DESC" ;
 //        echo $query;
 //        die();
         $result=  mysql_query($query);

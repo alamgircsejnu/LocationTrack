@@ -1,0 +1,4 @@
+http://localhost/Location/location.php?deviceId=DV201030&long=90.4026&lat=24.7492
+
+
+
