@@ -53,6 +53,7 @@ $allLocations = $location->index();
                     <th align="center">Device ID</th>
                     <th align="center">Longitude</th>
                     <th align="center">Latitude</th>
+                    <th align="center">Status</th>
                     <th align="center">Date and Time</th>
                 </tr>
                 </thead>
@@ -68,6 +69,7 @@ $allLocations = $location->index();
                     <td><?php echo $oneLocations['device_id'] ?></td>
                     <td><?php echo $oneLocations['lng'] ?></td>
                     <td><?php echo $oneLocations['lat']; ?></td>
+                    <td><?php echo $oneLocations['status']; ?></td>
                     <td><?php echo $oneLocations['created_at']; ?></td>
 
                 </tr>

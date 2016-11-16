@@ -8,6 +8,7 @@ class LocationTrack
     public $deviceId = '';
     public $longitude = '';
     public $latitude = '';
+    public $status = '';
 
 
     public function __construct()
@@ -30,6 +31,9 @@ class LocationTrack
         if (array_key_exists('lat', $data)) {
             $this->latitude = $data['lat'];
         }
+        if (array_key_exists('status', $data)) {
+            $this->status = $data['status'];
+        }
 
 
 //        print_r($this);
@@ -43,7 +47,7 @@ class LocationTrack
     public function store(){
         $d = new DateTime('', new DateTimeZone('Asia/Dhaka'));
         if(isset($this->deviceId) && !empty($this->deviceId) && isset($this->longitude) && !empty($this->longitude) && isset($this->latitude) && !empty($this->latitude)){
-            $query="INSERT INTO `tbl_location` (`id`, `device_id`,`lng`,`lat`,`created_at`) VALUES ('', '".$this->deviceId."','". $this->longitude."','". $this->latitude."','". $d->format('Y-m-d H:i:s')."')";
+            $query="INSERT INTO `tbl_location` (`id`, `device_id`,`lng`,`lat`,`status`,`created_at`) VALUES ('', '".$this->deviceId."','". $this->longitude."','". $this->latitude."','". $this->status."','". $d->format('Y-m-d H:i:s')."')";
 //            echo $query;
 //            die();
             mysql_query($query);
@@ -69,7 +73,7 @@ class LocationTrack
 
     public function mapIndex(){
         $mydata=array();
-        $query="SELECT lat,lng FROM `tbl_location` WHERE `device_id`='DV201030' ORDER BY id DESC" ;
+        $query="SELECT lat,lng FROM `tbl_location` ORDER BY id DESC" ;
 //        echo $query;
 //        die();
         $result=  mysql_query($query);
@@ -77,6 +81,17 @@ class LocationTrack
             $mydata[]=$row;
         }
         return $mydata;
+    }
+
+
+    public function checkData($device=''){
+//        $mydata=array();
+        $query="select r.min_lng,r.max_lng,r.min_lat,r.max_lat from `tbl_person` AS p,`tbl_reference` AS r WHERE r.school_id = p.school_id AND p.device_id ='".$device."';" ;
+//        echo $query;
+//        die();
+        $result=  mysql_query($query);
+        $row=  mysql_fetch_assoc($result);
+        return $row;
     }
 
 
