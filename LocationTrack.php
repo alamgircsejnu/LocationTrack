@@ -9,11 +9,13 @@ class LocationTrack
     public $longitude = '';
     public $latitude = '';
     public $status = '';
+    public $dateFrom = '';
+    public $dateTo = '';
 
 
     public function __construct()
     {
-        $conn = mysql_connect('localhost', 'root', 'acs_bl2016') or die("Server Not Found");
+        $conn = mysql_connect('localhost', 'root', '') or die("Server Not Found");
         mysql_select_db('db_location') or die("Database Not Found");
     }
 
@@ -33,6 +35,12 @@ class LocationTrack
         }
         if (array_key_exists('status', $data)) {
             $this->status = $data['status'];
+        }
+        if (array_key_exists('dateFrom', $data)) {
+            $this->dateFrom = $data['dateFrom'];
+        }
+        if (array_key_exists('dateTo', $data)) {
+            $this->dateTo = $data['dateTo'];
         }
 
 
@@ -59,7 +67,7 @@ class LocationTrack
 
     public function index(){
         $mydata=array();
-        $query="SELECT * FROM `tbl_location` ORDER BY id DESC" ;
+        $query="SELECT * FROM `tbl_location` WHERE `device_id`='".$this->deviceId."' AND created_at BETWEEN ('".$this->dateFrom." 00.00.00') AND ('".$this->dateTo." 23.59.59') ORDER BY id DESC" ;
 //        echo $query;
 //        die();
         $result=  mysql_query($query);
@@ -72,8 +80,11 @@ class LocationTrack
 
 
     public function mapIndex(){
+        $this->deviceId = $_SESSION['deviceId'];
+        $this->dateFrom = $_SESSION['dateFrom'];
+        $this->dateTo = $_SESSION['dateTo'];
         $mydata=array();
-        $query="SELECT * FROM `tbl_location` ORDER BY id DESC" ;
+        $query="SELECT * FROM `tbl_location` WHERE `device_id`='".$this->deviceId."' AND created_at BETWEEN ('".$this->dateFrom." 00.00.00') AND ('".$this->dateTo." 23.59.59') ORDER BY id DESC" ;
 //        echo $query;
 //        die();
         $result=  mysql_query($query);

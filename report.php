@@ -1,7 +1,11 @@
 <?php
+
+//print_r($_POST);
+//die();
 include_once 'LocationTrack.php';
 
 $location = new LocationTrack();
+$location->prepare($_POST);
 $allLocations = $location->index();
 ?>
 

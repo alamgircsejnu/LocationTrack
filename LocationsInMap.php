@@ -1,3 +1,31 @@
+<?php
+//print_r($_POST);
+//die();
+include_once 'LocationTrack.php';
+session_start();
+if (empty($_SESSION)){
+    $_SESSION['deviceId'] = $_POST['deviceId'];
+    $_SESSION['dateFrom'] = $_POST['dateFrom'];
+    $_SESSION['dateTo'] = $_POST['dateTo'];
+//    print_r($_SESSION);
+//    die();
+}
+if (!empty($_POST)){
+    $_SESSION['deviceId'] = $_POST['deviceId'];
+    $_SESSION['dateFrom'] = $_POST['dateFrom'];
+    $_SESSION['dateTo'] = $_POST['dateTo'];
+//    print_r($_SESSION);
+//    die();
+}
+//    print_r($_SESSION);
+//    die();
+$location = new LocationTrack();
+$location->prepare($_SESSION);
+$allLocations = $location->mapIndex();
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +37,7 @@
 </head>
 <body>
 <div id="map" style="width: 80%; height: 500px;margin: 8%;background-color: aquamarine"></div>
+
 
 <script type="text/javascript">
     refreshIntervalId = setInterval("requestPoints()", 4000);
