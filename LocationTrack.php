@@ -52,7 +52,7 @@ class LocationTrack
 //            die();
             mysql_query($query);
 
-            header('location:report.php');
+//            header('location:report.php');
 
         }
     }
@@ -73,7 +73,7 @@ class LocationTrack
 
     public function mapIndex(){
         $mydata=array();
-        $query="SELECT lat,lng FROM `tbl_location` ORDER BY id DESC" ;
+        $query="SELECT * FROM `tbl_location` ORDER BY id DESC" ;
 //        echo $query;
 //        die();
         $result=  mysql_query($query);

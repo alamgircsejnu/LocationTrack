@@ -1,4 +1,9 @@
-http://localhost/Location/location.php?deviceId=DV201030&long=90.4026&lat=24.7492
+http://localhost/Location/location.php?deviceId=DV201030&long=90.5026&lat=24.7492
+
+
+
+select * from`tbl_person` AS p,`tbl_reference` AS r
+WHERE r.school_id = p.school_id AND p.device_id ='DV201030';
 
 
 
