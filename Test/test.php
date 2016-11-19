@@ -11,60 +11,33 @@
 <div id="map" style="width: 80%; height: 500px;margin: 8%;background-color: aquamarine"></div>
 
 <script type="text/javascript">
-    refreshIntervalId = setInterval("requestPoints()", 4000);
-    function requestPoints() {
-        $.ajax({
-            url: 'geo-location.php',
-            success: function (data) {
-                ok = JSON.parse(data);
-//                console.log(ok);
-                markLocations(ok);
-            }
-        });
+    // Bounds for North America
+    var strictBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(28.70, -127.50),
+        new google.maps.LatLng(48.85, -55.90)
+    );
 
-    }
+    // Listen for the dragend event
+    google.maps.event.addListener(map, 'dragend', function() {
+        if (strictBounds.contains(map.getCenter())) return;
 
-    //    var locations = [
-    //        ['Bondi Beach', 23.7099, 90.4071, 4],
-    //        ['Coogee Beach', -33.923036, 151.259052, 5],
-    //        ['Cronulla Beach', -34.028249, 151.157507, 3],
-    //        ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-    //        ['Maroubra Beach', -33.950198, 151.259302, 1]
-    //    ];
+        // We're out of bounds - Move the map back within the bounds
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 7,
-        center: new google.maps.LatLng(24.7492, 90.5026),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        var c = map.getCenter(),
+            x = c.lng(),
+            y = c.lat(),
+            maxX = strictBounds.getNorthEast().lng(),
+            maxY = strictBounds.getNorthEast().lat(),
+            minX = strictBounds.getSouthWest().lng(),
+            minY = strictBounds.getSouthWest().lat();
+
+        if (x < minX) x = minX;
+        if (x > maxX) x = maxX;
+        if (y < minY) y = minY;
+        if (y > maxY) y = maxY;
+
+        map.setCenter(new google.maps.LatLng(y, x));
     });
-
-    var infowindow = new google.maps.InfoWindow();
-
-    var marker, i;
-    function  markLocations(locations) {
-//    console.log(locations);
-
-        for (i = 0; i < locations.length; i++) {
-//        console.log(locations[i]["lat"]);
-            if(locations[i]["status"]=='INSIDE'){
-            var image = 'images/dot.png';
-            }  else {
-                var image = 'images/red-pog.png';
-            }
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(locations[i]["lat"], locations[i]["lng"]),
-                map: map,
-                icon:image
-            });
-
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    infowindow.setContent(locations[i][0]);
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
-        }
-    }
 </script>
 </body>
 </html>

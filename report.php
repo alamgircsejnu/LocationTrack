@@ -1,7 +1,11 @@
 <?php
+
+//print_r($_POST);
+//die();
 include_once 'LocationTrack.php';
 
 $location = new LocationTrack();
+$location->prepare($_POST);
 $allLocations = $location->index();
 ?>
 
@@ -35,14 +39,26 @@ $allLocations = $location->index();
     </style>
 </head>
 
-<body>
+<body style="background-color: #ADD8E6">
+
+<div class="row" style="background-color: #006dcc;height: 40px">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div style="margin: 4px">
+            <a href="reportAccess.php" style="color: white;text-decoration: none;font-size: 20px">Report</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="mapAccess.php" style="color: white;text-decoration: none;font-size: 20px">Map </a>&nbsp&nbsp&nbsp&nbsp
+            <a href="register.php" style="color: white;text-decoration: none;font-size: 20px">Register</a>&nbsp&nbsp&nbsp&nbsp
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
 
 <br><br>
 
 <div class="row">
 
     <div class="col-md-1"></div>
-    <div id="custom-table" class="col-md-10" style="background-color: #a3c4d1;padding: 1px">
+    <div id="custom-table" class="col-md-10" style="background-color: aliceblue;padding: 1px">
 
 
         <div class="table-responsive" id="custom-table">
