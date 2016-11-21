@@ -1,140 +1,69 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <title>Google Maps JavaScript API v3 Example: Common Loader</title>
-    <script type="text/javascript" src="jquery-1.9.0.js"></script>
-    <script src="http://maps.google.com/maps/api/js?key=AIzaSyDpG0X3mLqEju5PBCEV4IyjOJc7vAnUTbM"></script>
-    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="util.js"></script>
-    <script type="text/javascript">
-
-        //Icons
-        var customIcons = {
-            free: {
-                icon: 'http://localhost/Location/Test/images/pin-green.png',
-                shadow: 'http://labs.google.com/ridefinder/images/mm_20_shadow.png'
-            },
-            busy: {
-                icon: 'http://localhost/Location/Test/images/dot.png',
-                shadow: 'http://labs.google.com/ridefinder/images/mm_20_shadow.png'
-            }
-        };
-
-        //Popup dos markers
-        var infoWindow = null;
-
-        //A visibilidade do mapa precisa estar global
-        var map = null;
-
-        //Este é um array global dos marcadores presentes na tela
-        var markersArray = [];
-
-        /*
-         * Inicialização da API de Mapas do Google
-         */
-        function initialize() {
-
-            //Não vou explicar o óbvio!!!
-            var myLatlng = new google.maps.LatLng(37.4419, -122.1419);
-            var myOptions = {
-                zoom : 13,
-                center : myLatlng,
-                mapTypeId : google.maps.MapTypeId.ROADMAP
-            }
-
-            map = new google.maps.Map(document.getElementById("map_canvas"),
-                myOptions);
-
-            infoWindow = new google.maps.InfoWindow;
-
-            //Esse método eu criei para realizar o load dos markers no mapa
-            //Execução imediata!!!
-            updateMaps();
-
-            //Definimos tambem execução com intervalo de tempo
-            window.setInterval(updateMaps, 5000);
-
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Polygon arrays</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
         }
-
-        /*
-         * Método que remove os overlays dos markers
-         */
-        function clearOverlays() {
-            for (var i = 0; i < markersArray.length; i++ ) {
-                markersArray[i].setMap(null);
-            }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
-
-        /*
-         * Método que realiza chama o caminho do xml de dados
-         * e atualiza o mapa
-         */
-        function updateMaps() {
-
-            // Vamos remover o que já havia de overlay
-            // É possível implementar a remoção e inclusão seletiva
-            clearOverlays();
-
-            //Aqui é o pulo do gato, que muita gente perde noites de sono
-            //e quando você para para ver a solução, percebe que é tão óbvia
-
-            //Quando chamamos um arquivo, o browser pode tomar a decisão
-            //de armazenar em cache. Se o browser utilizar cache, as próximas
-            //requisições do mesmo recurso não batem no servidor.
-
-            //Definindo um modificador único para o arquivo de dados conseguimos "FORÇAR"
-            //o browser a baixar novamente o arquivo.
-
-            //Em java eu utilizo o header do http para dizer NO-CACHE!!
-
-            var timestamp = new Date().getTime();
-            var data = $.ajax({
-                url: 'geo-location.php',
-                success: function (data) {
-                    ok = JSON.parse(data);
-//                console.log(ok);
-//                    markLocations(ok);
-                    return ok;
-                }
-            });
-
-            //Me guardo o direito a não explicar o óbvio, novamente
-            $.get(data, {}, function(data) {
-                $(data).find("{").each(
-                    function() {
-                        var marker = $(this);
-                        var status = "busy"
-                        var icon = customIcons[status] || {};
-                        var latlng = new google.maps.LatLng(parseFloat(marker
-                            .attr("lat")), parseFloat(marker.attr("lng")));
-                        var html = "<b>this location is "+status+"</b><br/><a href=\"#\">I\'m on it!</a>";
-                        var marker = new google.maps.Marker({
-                            position : latlng,
-                            map : map,
-                            icon: icon.icon,
-                            shadow: icon.shadow,
-                        });
-
-                        google.maps.event.addListener(marker, 'click', function() {
-                            infoWindow.setContent(html);
-                            infoWindow.open(map, marker);
-                        });
-
-                        //Opa... bora guardar as referências dos markers??
-                        markersArray.push(marker);
-
-                        google.maps.event.addListener(marker, "click", function() {});
-                    });
-            });
-
-        }
-
-        google.setOnLoadCallback(initialize);
-
-    </script>
+    </style>
 </head>
 <body>
-<div id="map_canvas" style="width: 800px; height: 600px"></div>
+<div id="map"></div>
+<script>
+    // This example requires the Geometry library. Include the libraries=geometry
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry">
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 24.886, lng: -70.269},
+            zoom: 5,
+        });
+
+        var triangleCoords = [
+            {lat: 50.321, lng: -105.757},
+            {lat: 36.321, lng: -89.757},
+            {lat: 25.774, lng: -80.19},
+            {lat: 18.466, lng: -66.118},
+            {lat: 32.321, lng: -64.757},
+
+        ];
+
+        var bermudaTriangle = new google.maps.Polygon({paths: triangleCoords});
+
+        google.maps.event.addListener(map, 'click', function(e) {
+            var resultColor =
+                google.maps.geometry.poly.containsLocation(e.latLng, bermudaTriangle) ?
+                    'red' :
+                    'green';
+
+            new google.maps.Marker({
+                position: e.latLng,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: resultColor,
+                    fillOpacity: .2,
+                    strokeColor: 'white',
+                    strokeWeight: .5,
+                    scale: 10
+                }
+            });
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpG0X3mLqEju5PBCEV4IyjOJc7vAnUTbM&libraries=geometry&callback=initMap"
+        async defer></script>
 </body>
 </html>

@@ -14,14 +14,15 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
-<body style="background-color: #ADD8E6">
-<div class="row" style="background-color: #006dcc;height: 40px">
+<body>
+<div class="row" style="background-color: #006686;height: 40px">
     <div class="col-md-4"></div>
-    <div class="col-md-4">
-        <div style="margin: 4px">
-            <a href="reportAccess.php" style="color: white;text-decoration: none;font-size: 20px">Report</a>&nbsp&nbsp&nbsp&nbsp
-            <a href="mapAccess.php" style="color: white;text-decoration: none;font-size: 20px">Map </a>&nbsp&nbsp&nbsp&nbsp
-            <a href="register.php" style="color: white;text-decoration: none;font-size: 20px">Register</a>&nbsp&nbsp&nbsp&nbsp
+    <div class="col-md-4" style="margin: 8px">
+        <div>
+            <a href="reportAccess.php" style="color: white;text-decoration: none;font-size: 15px">Report</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="mapAccess.php" style="color: white;text-decoration: none;font-size: 15px">Map </a>&nbsp&nbsp&nbsp&nbsp
+            <a href="register.php" style="color: white;text-decoration: none;font-size: 15px">Register</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="bindArea.php" style="color: white;text-decoration: none;font-size: 15px">Bind Area</a>&nbsp&nbsp&nbsp&nbsp
         </div>
     </div>
     <div class="col-md-4"></div>
@@ -29,7 +30,7 @@
 <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4"><br><br>
-        <p style="font-family: Arial;font-size:19px;background-color: #006dcc;color: white;padding: 1%">Register with 2RA GPS Tracking Service.</p>
+        <p style="font-family: Arial;font-size:15px;background-color: #006686;color: white;padding: 1%;height: 32px">Register with 2RA GPS Tracking Service.</p>
 
         <div  style="background-color: aliceblue">
             <div class="row">
@@ -59,7 +60,7 @@
             <br>
             <div class="form-group">
 <!--                <button type="submit" class="form-group btn btn-primary">Create Task</button>-->
-                <input type="submit" class="form-control" value="Register" style="background-color: #006dcc;color: #ffffff">
+                <input type="submit" class="form-control" value="Register" style="background-color: #006686;color: #ffffff">
             </div>
         </form>
                 </div>

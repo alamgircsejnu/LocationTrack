@@ -1,134 +1,139 @@
+<?php
+//print_r($_POST);
+//die();
+include_once 'LocationTrack.php';
+session_start();
+if (isset($_POST['selectedLocations']) && !empty($_POST['selectedLocations'])){
+    $_SESSION['selectedLocations'] = $_POST['selectedLocations'];
+}elseif (empty($_SESSION)){
+    $_SESSION['deviceId'] = $_POST['deviceId'];
+    $_SESSION['dateFrom'] = $_POST['dateFrom'];
+    $_SESSION['dateTo'] = $_POST['dateTo'];
+//    print_r($_SESSION);
+//    die();
+}elseif (!empty($_POST['deviceId'])){
+    $_SESSION['deviceId'] = $_POST['deviceId'];
+    $_SESSION['dateFrom'] = $_POST['dateFrom'];
+    $_SESSION['dateTo'] = $_POST['dateTo'];
+//    print_r($_SESSION);
+//    die();
+}
+//    print_r($_SESSION);
+//    die();
+$location = new LocationTrack();
+$location->prepare($_SESSION);
+$allLocations = $location->mapIndex();
+$allLocations = $location->mapIndex();
+$allCoords = $location->boundaryCoords();
+//print_r($allLocations);
+//die();
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Waypoints in directions</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Google Maps Multiple Markers</title>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <style>
-        #right-panel {
-            font-family: 'Roboto','sans-serif';
-            line-height: 30px;
-            padding-left: 10px;
-        }
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-        #right-panel select, #right-panel input {
-            font-size: 15px;
-        }
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-        #right-panel select {
-            width: 100%;
-        }
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-        #right-panel i {
-            font-size: 12px;
-        }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            height: 100%;
-            float: left;
-            width: 70%;
-            height: 100%;
-        }
-        #right-panel {
-            margin: 20px;
-            border-width: 2px;
-            width: 20%;
-            height: 400px;
-            float: left;
-            text-align: left;
-            padding-top: 0;
-        }
-        #directions-panel {
-            margin-top: 10px;
-            background-color: #FFEE77;
-            padding: 10px;
-        }
-    </style>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpG0X3mLqEju5PBCEV4IyjOJc7vAnUTbM">
+        type="text/javascript"></script>
+
 </head>
-<body>
-<div id="map"></div>
-<div id="right-panel">
-
-    <div id="directions-panel"></div>
+<body style="background-color: #ADD8E6">
+<div class="row" style="background-color: #006dcc;height: 40px">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div style="margin: 4px">
+            <a href="reportAccess.php" style="color: white;text-decoration: none;font-size: 20px">Report</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="mapAccess.php" style="color: white;text-decoration: none;font-size: 20px">Map </a>&nbsp&nbsp&nbsp&nbsp
+            <a href="register.php" style="color: white;text-decoration: none;font-size: 20px">Register</a>&nbsp&nbsp&nbsp&nbsp
+        </div>
+    </div>
+    <div class="col-md-4"></div>
 </div>
-<script>
-    var dirService;
-    var dirDisplay;
-    refreshIntervalId = setInterval("requestPoints(dirService,dirDisplay)", 4000);
-    function initMap() {
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 6,
-            center: {lat: 24.7492, lng: 90.5026}
-        });
-        directionsDisplay.setMap(map);
+<div id="map" style="width: 80%; height: 500px;margin: 8%;background-color: aquamarine"></div>
 
-        dirService = directionsService;
-        dirDisplay = directionsDisplay;
 
-        requestPoints(directionsService,directionsDisplay);
-    }
+<script type="text/javascript">
+    refreshIntervalId = setInterval("requestPoints()", 4000);
 
-function requestPoints(directionsService,directionsDisplay) {
-    $.ajax({
-        url: 'geo-location.php',
-        success: function (data) {
-            ok = JSON.parse(data);
-            console.log(ok);
-//                markLocations(ok);
-            calculateAndDisplayRoute(ok,directionsService, directionsDisplay);
-        }
-    });
-
-}
-
-    function calculateAndDisplayRoute(result,directionsService, directionsDisplay) {
-        var waypts = [];
-        var checkboxArray = result;
-        var arrayLength = checkboxArray.length;
-        for (var i = 1; i < arrayLength-1; i++) {
-                waypts.push({
-                    location: new google.maps.LatLng(checkboxArray[i]['lat'],checkboxArray[i]['lng']),
-                    stopover: true
-                });
-        }
-
-        directionsService.route({
-            origin: new google.maps.LatLng(checkboxArray[0]['lat'],checkboxArray[0]['lng']),
-            destination: new google.maps.LatLng(checkboxArray[arrayLength-1]['lat'],checkboxArray[arrayLength-1]['lng']),
-            waypoints: waypts,
-            optimizeWaypoints: true,
-            travelMode: 'DRIVING'
-        }, function(response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-                var route = response.routes[0];
-                var summaryPanel = document.getElementById('directions-panel');
-                summaryPanel.innerHTML = '';
-                // For each route, display summary information.
-                for (var i = 0; i < route.legs.length; i++) {
-                    var routeSegment = i + 1;
-                    summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                        '</b><br>';
-                    summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-                    summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-                    summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-                }
-            } else {
-                window.alert('Directions request failed due to ' + status);
+    function requestPoints() {
+        $.ajax({
+            url: 'geo-location.php',
+            success: function (data) {
+//                console.log(data);
+               var ok = JSON.parse(data);
+//                console.log(ok);
+                markLocations(ok);
             }
         });
+
+    }
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: new google.maps.LatLng(<?php echo $allLocations[0]['lat'] . ',' . $allLocations[0]['lng']; ?>),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var triangleCoords = [
+        <?php
+        for ($i=0;$i<count($allCoords);$i++){
+        echo '{lat: '.$allCoords[$i]['lat'] . ', lng: ' . $allCoords[$i]['lng'].'},';
+        }?>
+        ];
+
+    var bermudaTriangle = new google.maps.Polygon({paths: triangleCoords});
+    var marker, i;
+//    map.setMapTypeId('terrain');
+    function  markLocations(locations) {
+
+//        console.log(locations);
+        for (i = 0; i < locations.length; i++) {
+//        console.log(locations[i]["lat"]);
+//            if(locations[i]['status']=='INSIDE'){
+                var image1 = 'images/dot.png';
+//            }  else {
+                var image2 = 'images/red-pog.png';
+//            }
+//            google.maps.event.addListener(map, 'click', function (e) {
+//                console.log(locations);
+                var resultColor =
+                    google.maps.geometry.poly.containsLocation(new google.maps.LatLng(locations[i]["lat"], locations[i]["lng"]), bermudaTriangle) ?
+                        image1 :
+                        image2;
+                new google.maps.Marker({
+                    position: new google.maps.LatLng(locations[i]["lat"], locations[i]["lng"]),
+                    map: map,
+                    icon: resultColor
+//                });
+            });
+
+//            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+//                return function() {
+//                    infowindow.setContent(locations[i][0]);
+//                    infowindow.open(map, marker);
+//                }
+//            })(marker, i));
+
+//            map.setCenter(new google.maps.LatLng(locations[0]['lat'], locations[0]['lng']));
+        }
     }
 </script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpG0X3mLqEju5PBCEV4IyjOJc7vAnUTbM&callback=initMap">
-</script>
-
 </body>
 </html>

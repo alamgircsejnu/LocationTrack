@@ -9,8 +9,8 @@ $location = new  LocationTrack();
 $checkData = $location->checkData($deviceId);
 //print_r($checkData);
 //die();
-$long = (float)$_GET['long'];
-$lat = (float)$_GET['lat'];
+$long = (double)$_GET['long'];
+$lat = (double)$_GET['lat'];
 $_GET['long'] = $long;
 $_GET['lat'] = $lat;
 

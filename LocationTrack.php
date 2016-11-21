@@ -1,5 +1,5 @@
 <?php
-
+//session_start();
 
 class LocationTrack
 {
@@ -11,6 +11,7 @@ class LocationTrack
     public $status = '';
     public $dateFrom = '';
     public $dateTo = '';
+    public $selectedLocations = [];
 
 
     public function __construct()
@@ -42,9 +43,12 @@ class LocationTrack
         if (array_key_exists('dateTo', $data)) {
             $this->dateTo = $data['dateTo'];
         }
+        if (array_key_exists('selectedLocations', $data)) {
+            $this->selectedLocations = $data['selectedLocations'];
+        }
 
 
-//        print_r($this);
+//        print_r($this->selectedLocations[0]);
 //
 //        die();
 
@@ -80,17 +84,33 @@ class LocationTrack
 
 
     public function mapIndex(){
+
+        if (isset($_SESSION['deviceId']) && !empty($_SESSION['deviceId'])){
         $this->deviceId = $_SESSION['deviceId'];
         $this->dateFrom = $_SESSION['dateFrom'];
         $this->dateTo = $_SESSION['dateTo'];
-        $mydata=array();
+            $mydata=array();
         $query="SELECT * FROM `tbl_location` WHERE `device_id`='".$this->deviceId."' AND created_at BETWEEN ('".$this->dateFrom." 00.00.00') AND ('".$this->dateTo." 23.59.59') ORDER BY id DESC" ;
 //        echo $query;
 //        die();
-        $result=  mysql_query($query);
-        while ($row=  mysql_fetch_assoc($result)){
-            $mydata[]=$row;
+            $result=  mysql_query($query);
+            while ($row=  mysql_fetch_assoc($result)){
+                $mydata[]=$row;
+            }
+
+        } elseif (isset($_SESSION['selectedLocations'])){
+            $mydata=array();
+            for ($i=0;$i<count($_SESSION['selectedLocations']);$i++){
+                $query="SELECT * FROM `tbl_location` WHERE `id`='".$_SESSION['selectedLocations'][$i]."'" ;
+//        echo $query;
+//        die();
+                $result=  mysql_query($query);
+                $row=  mysql_fetch_assoc($result);
+                    $mydata[]=$row;
+            }
         }
+//print_r($mydata);
+//        die();
         return $mydata;
     }
 
@@ -103,6 +123,18 @@ class LocationTrack
         $result=  mysql_query($query);
         $row=  mysql_fetch_assoc($result);
         return $row;
+    }
+
+    public function boundaryCoords(){
+        $mydata=array();
+        $query="SELECT lat,lng FROM `tbl_bounded_area` WHERE `school_id`='147'" ;
+//        echo $query;
+//        die();
+        $result=  mysql_query($query);
+        while ($row=  mysql_fetch_assoc($result)){
+            $mydata[]=$row;
+        }
+        return $mydata;
     }
 
 

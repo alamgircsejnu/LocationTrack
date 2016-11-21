@@ -39,15 +39,16 @@ $allLocations = $location->index();
     </style>
 </head>
 
-<body style="background-color: #ADD8E6">
+<body>
 
-<div class="row" style="background-color: #006dcc;height: 40px">
+<div class="row" style="background-color: #006686;height: 40px">
     <div class="col-md-4"></div>
-    <div class="col-md-4">
-        <div style="margin: 4px">
-            <a href="reportAccess.php" style="color: white;text-decoration: none;font-size: 20px">Report</a>&nbsp&nbsp&nbsp&nbsp
-            <a href="mapAccess.php" style="color: white;text-decoration: none;font-size: 20px">Map </a>&nbsp&nbsp&nbsp&nbsp
-            <a href="register.php" style="color: white;text-decoration: none;font-size: 20px">Register</a>&nbsp&nbsp&nbsp&nbsp
+    <div class="col-md-4" style="margin: 8px">
+        <div>
+            <a href="reportAccess.php" style="color: white;text-decoration: none;font-size: 15px">Report</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="mapAccess.php" style="color: white;text-decoration: none;font-size: 15px">Map </a>&nbsp&nbsp&nbsp&nbsp
+            <a href="register.php" style="color: white;text-decoration: none;font-size: 15px">Register</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="bindArea.php" style="color: white;text-decoration: none;font-size: 15px">Bind Area</a>&nbsp&nbsp&nbsp&nbsp
         </div>
     </div>
     <div class="col-md-4"></div>
@@ -60,17 +61,18 @@ $allLocations = $location->index();
     <div class="col-md-1"></div>
     <div id="custom-table" class="col-md-10" style="background-color: aliceblue;padding: 1px">
 
-
+<form action="LocationsInMap.php" method="post">
         <div class="table-responsive" id="custom-table">
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th align="center">SL#</th>
                     <th align="center">Device ID</th>
-                    <th align="center">Longitude</th>
                     <th align="center">Latitude</th>
+                    <th align="center">Longitude</th>
                     <th align="center">Status</th>
                     <th align="center">Date and Time</th>
+                    <th align="center"> <input class="check-all" type="checkbox" name="" id="ckbCheckAll"></th>
                 </tr>
                 </thead>
                 <?php
@@ -83,14 +85,27 @@ $allLocations = $location->index();
                 <tr>
                     <td><?php echo $serial ?></td>
                     <td><?php echo $oneLocations['device_id'] ?></td>
-                    <td><?php echo $oneLocations['lng'] ?></td>
                     <td><?php echo $oneLocations['lat']; ?></td>
+                    <td><?php echo $oneLocations['lng'] ?></td>
                     <td><?php echo $oneLocations['status']; ?></td>
                     <td><?php echo $oneLocations['created_at']; ?></td>
+                    <td>
+                                <input type="checkbox" class="checkBoxClass" name="selectedLocations[]"
+                                       value="<?php echo $oneLocations['id']?>" id="<?php echo $oneLocations['id']?>"></td>
 
                 </tr>
+
                 <?php
                 }
+                ?>
+                <tr>
+                    <td colspan="6"></td>
+                    <td>
+                        <input type="submit" value="Go">
+                    </td>
+                </tr>
+                </form>
+                <?php
                 } else {
                     ?>
                     <tr>

@@ -79,6 +79,38 @@ class RegisterUser
         return $row;
     }
 
+    public function storeArea($data=''){
+//        print_r($data);
+//        die();
+        $sl =0;
+      echo $numberOfLocations = (count($data)-1)/2;
+        $d = new DateTime('', new DateTimeZone('Asia/Dhaka'));
+        for ($i=0;$i<$numberOfLocations;$i++){
+            $sl++;
+        if(isset($data) && !empty($data)){
+            $query="INSERT INTO `tbl_bounded_area` (`id`, `school_id`,`lat`,`lng`,`created_at`) VALUES ('', '".$data['school_id']."','". $data["ID".$sl."_latitude"]."','". $data["ID".$sl."_longitude"]."','". $d->format('Y-m-d H:i:s')."')";
+//            echo $query;
+//            die();
+          mysql_query($query);
+
+        }
+        }
+    }
+
+
+    public function boundaryCoords(){
+            $mydata=array();
+            $query="SELECT lat,lng FROM `tbl_bounded_area` WHERE `school_id`='123'" ;
+//        echo $query;
+//        die();
+            $result=  mysql_query($query);
+            while ($row=  mysql_fetch_assoc($result)){
+                $mydata[]=$row;
+            }
+            return $mydata;
+    }
+
+
 
 
 }
