@@ -13,6 +13,7 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<<<<<<< HEAD
     <link href="asset/js/css/blitzer/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -29,6 +30,11 @@
     </div>
     <div class="col-md-4"></div>
 </div>
+=======
+</head>
+
+<body>
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
 <br><br><br>
 <div class="row">
     <div class="col-md-4"></div>
@@ -44,16 +50,28 @@
                         </div>
                         <div class="form-group">
                             <label for="deviceId">Date From</label>
+<<<<<<< HEAD
                             <input type="text" class="form-control" name="dateFrom" id="dateFrom" required>
                         </div>
                         <div class="form-group">
                             <label for="deviceId">Date To</label>
                             <input type="text" class="form-control" name="dateTo" id="dateTo" required>
+=======
+                            <input type="date" class="form-control" name="dateFrom" id="deviceId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="deviceId">Date To</label>
+                            <input type="date" class="form-control" name="dateTo" id="deviceId" required>
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
                         </div>
                         <br>
                         <div class="form-group">
                             <!--                <button type="submit" class="form-group btn btn-primary">Create Task</button>-->
+<<<<<<< HEAD
                             <input type="submit" class="form-control" value="See Map" style="background-color: #006686;color: #ffffff">
+=======
+                            <input type="submit" class="form-control" value="See Map" style="background-color: #006dcc;color: #ffffff">
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
                         </div>
                     </form>
                 </div>
@@ -64,6 +82,7 @@
     <div class="col-md-4"></div>
 </div>
 
+<<<<<<< HEAD
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script src="asset/js/jquery-ui-1.10.4.custom.min.js"></script>
 
@@ -106,5 +125,7 @@
 
 </style>
 
+=======
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
 </body>
 </html>

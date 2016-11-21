@@ -16,6 +16,7 @@
 </head>
 
 <body>
+<<<<<<< HEAD
 <div class="row" style="background-color: #006686;height: 40px">
     <div class="col-md-4"></div>
     <div class="col-md-4" style="margin: 8px">
@@ -27,6 +28,18 @@
         </div>
     </div>
     <div class="col-md-4"></div>
+=======
+<br><br><br>
+<div class="row">
+    <div class="col-md-2"></div>
+<div class="col-md-8">
+<a href="reportAccess.php">Report</a>&nbsp&nbsp
+<a href="mapAccess.php">Map </a>&nbsp&nbsp
+<a href="register.php">Register</a>&nbsp&nbsp
+
+</div>
+    <div class="col-md-2"></div>
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
 </div>
 
 </body>

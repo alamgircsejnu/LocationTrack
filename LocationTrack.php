@@ -11,12 +11,15 @@ class LocationTrack
     public $status = '';
     public $dateFrom = '';
     public $dateTo = '';
+<<<<<<< HEAD
     public $selectedLocations = [];
+=======
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
 
 
     public function __construct()
     {
-        $conn = mysql_connect('localhost', 'root', 'acs_bl2016') or die("Server Not Found");
+        $conn = mysql_connect('localhost', 'root', '') or die("Server Not Found");
         mysql_select_db('db_location') or die("Database Not Found");
     }
 
@@ -43,9 +46,12 @@ class LocationTrack
         if (array_key_exists('dateTo', $data)) {
             $this->dateTo = $data['dateTo'];
         }
+<<<<<<< HEAD
         if (array_key_exists('selectedLocations', $data)) {
             $this->selectedLocations = $data['selectedLocations'];
         }
+=======
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
 
 
 //        print_r($this->selectedLocations[0]);
@@ -84,12 +90,19 @@ class LocationTrack
 
 
     public function mapIndex(){
+<<<<<<< HEAD
 
         if (isset($_SESSION['deviceId']) && !empty($_SESSION['deviceId'])){
         $this->deviceId = $_SESSION['deviceId'];
         $this->dateFrom = $_SESSION['dateFrom'];
         $this->dateTo = $_SESSION['dateTo'];
             $mydata=array();
+=======
+        $this->deviceId = $_SESSION['deviceId'];
+        $this->dateFrom = $_SESSION['dateFrom'];
+        $this->dateTo = $_SESSION['dateTo'];
+        $mydata=array();
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
         $query="SELECT * FROM `tbl_location` WHERE `device_id`='".$this->deviceId."' AND created_at BETWEEN ('".$this->dateFrom." 00.00.00') AND ('".$this->dateTo." 23.59.59') ORDER BY id DESC" ;
 //        echo $query;
 //        die();

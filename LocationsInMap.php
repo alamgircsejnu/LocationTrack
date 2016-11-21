@@ -3,15 +3,24 @@
 //die();
 include_once 'LocationTrack.php';
 session_start();
+<<<<<<< HEAD
 if (isset($_POST['selectedLocations']) && !empty($_POST['selectedLocations'])){
     $_SESSION['selectedLocations'] = $_POST['selectedLocations'];
 }elseif (empty($_SESSION)){
+=======
+if (empty($_SESSION)){
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
     $_SESSION['deviceId'] = $_POST['deviceId'];
     $_SESSION['dateFrom'] = $_POST['dateFrom'];
     $_SESSION['dateTo'] = $_POST['dateTo'];
 //    print_r($_SESSION);
 //    die();
+<<<<<<< HEAD
 }elseif (!empty($_POST['deviceId'])){
+=======
+}
+if (!empty($_POST)){
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
     $_SESSION['deviceId'] = $_POST['deviceId'];
     $_SESSION['dateFrom'] = $_POST['dateFrom'];
     $_SESSION['dateTo'] = $_POST['dateTo'];
@@ -23,8 +32,11 @@ if (isset($_POST['selectedLocations']) && !empty($_POST['selectedLocations'])){
 $location = new LocationTrack();
 $location->prepare($_SESSION);
 $allLocations = $location->mapIndex();
+<<<<<<< HEAD
 //print_r($allLocations);
 //die();
+=======
+>>>>>>> ddbdb4c15001701a524310126e3f04d8c6c044a3
 
 ?>
 
